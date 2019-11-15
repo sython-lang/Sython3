@@ -7,3 +7,5 @@ test = 2 ** 10
 print ( test )
 print("non")
 print('oui ou pas :D')
+print("test", 2 + 2)
+print("Ceci est", test)

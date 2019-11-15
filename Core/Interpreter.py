@@ -2,6 +2,7 @@ from Core.Environment import Environment
 from Core.Syntax import Syntax
 from Core.Parser import Parser
 from Core.Constants import ERROR_STR
+from Core.Utils import split
 
 
 class Interpreter:
@@ -43,7 +44,7 @@ class Interpreter:
         else:
             if exp[0] in self.env.functions.keys():
                 proc = self.env.functions[exp[0]]
-                args = [self.eval_exp(nb, i) for i in exp[1:]]
+                args = [self.eval_exp(nb, i) for i in split(exp[1], ",")]
                 return proc(*args)
             elif exp[1] in self.env.operators.keys():
                 proc = self.env.operators[exp[1]]
