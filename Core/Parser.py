@@ -6,10 +6,13 @@ from Core.Utils import split
 class Parser:
     def __init__(self, program):
         self.program = program
-        regex_symbols = ("(", ")", '"', "'", "\n", "+", "-", "/", "*", "%", "=")
-        other_symbols = ("**", "//")
-        for i in regex_symbols:
-            regex = re.compile(r"([^{0}])([{0}])([^{0}]|$)".format(i))
+        blocked_left_regex_symbols = ("!<>", "", "", "", "", "", "", "", "", "", "", "", "", "")
+        blocked_right_regex_symbols = ("", "", "", "", "", "", "", "", "", "", "", "", "=", "=")
+        regex_symbols = ("=", ")", '"', "'", "\n", "+", "-", "/", "*", "%", "(", ",", "<", ">")
+        other_symbols = ("**", "//", "<=", ">=", "==", "!=")
+        for k, v in enumerate(regex_symbols):
+            regex = re.compile(r"([^{0}])([{1}])([^{2}]|$)".format(v+blocked_left_regex_symbols[k], v,
+                                                                   v+blocked_right_regex_symbols[k]))
             self.program = regex.sub("\\1 \\2 \\3", self.program)
         for i in other_symbols:
             self.program = self.program.replace(i, " " + i + " ")
