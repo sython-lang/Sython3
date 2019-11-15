@@ -10,8 +10,7 @@ class Interpreter:
         self.env = Environment()
 
     def repl(self, prompt="> "):
-        code = ""
-        while code != "exit()":
+        while True:
             code = input(prompt)
             if Syntax(code).check:
                 parser = Parser(code)
