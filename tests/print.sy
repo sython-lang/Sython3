@@ -1,0 +1,9 @@
+print ( 1.5 )
+print(2+ 3)
+print( 2 ** 3)
+print(2 // 4)
+print(2 / 4)
+test = 2 ** 10
+print ( test )
+print("non")
+print('oui ou pas :D')
