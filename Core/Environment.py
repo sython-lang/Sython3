@@ -11,7 +11,8 @@ class Environment:
             'print': print
         }
         self.variables = {
-
+            "true": True,
+            "false": False
         }
 
     def set(self, name, value):
