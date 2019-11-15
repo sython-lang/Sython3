@@ -1,5 +1,6 @@
 import re
-import itertools
+
+from Core.Utils import split
 
 
 class Parser:
@@ -66,17 +67,7 @@ class Parser:
             else:
                 liste.append(self.get_value(token))
 
-        liste = list(filter(
-            lambda n: not isinstance(n[0], str) or n[0].strip() != "",
-            map
-            (
-                lambda n: list(n[1]),
-                itertools.groupby(liste, lambda word: isinstance(word, str) and word == "\n")
-            )
-        ))
-
-        if len(liste) == 1:
-            liste = liste[0]
+        liste = split(liste, "\n")
 
         return liste
 
