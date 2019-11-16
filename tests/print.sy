@@ -1,6 +1,12 @@
-print ( 1.5 )
-var = 2
-print("non")
-print('oui ou pas :D')
-print("Ceci est", var)
-print(true, false)
+print ( 1.5 );
+
+var = 2;
+print("non");
+
+
+print('oui ou pas :D');
+print("Ceci est", var);
+
+print("Ceci est " + str(var) );
+
+print(true, false);
