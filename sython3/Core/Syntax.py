@@ -13,9 +13,11 @@ class Syntax:
 
     @staticmethod
     def check_semi_colon(line, exp):
-        if len(exp.replace(" ", "")) and exp.replace(" ", "")[-1] != ";":
-            print(ERROR_STR.format("SyntaxError", line, "Required ';'"))
-            return False
+        # TODO : REMAKE THIS FUNCTION
+
+        #  if len(exp.replace(" ", "")) and exp.replace(" ", "")[-1] != ";":
+        #      print(ERROR_STR.format("SyntaxError", line, "Required ';'"))
+        #      return False
         return True
 
     @staticmethod
