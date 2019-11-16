@@ -58,9 +58,19 @@ class Interpreter:
                                 for kt, vt in enumerate(temp):
                                     if len(vt) == 1:
                                         temp[kt] = vt[0]
-                                args[k] = self.eval_exp(nb, temp)
+                                if exp[0] != "if":
+                                    args[k] = self.eval_exp(nb, temp)
+                                else:
+                                    args[k] = temp
                     else:
-                        args[k] = self.eval_exp(nb, v)
+                        if exp[0] not in self.env.not_eval_function:
+                            args[k] = self.eval_exp(nb, v)
+                        else:
+                            args[k] = v
+                if exp[0] in self.env.not_eval_function:
+                    args.insert(0, nb)
+                    args.insert(0, self)
+                    args.append(exp[2])
                 return proc(*args)
             elif isinstance(exp[1], str) and exp[1] in self.env.operators.keys():
                 proc = self.env.operators[exp[1]]

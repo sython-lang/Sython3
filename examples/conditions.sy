@@ -1,0 +1,10 @@
+var = 5;
+if(8 >= var)
+{
+    print("TOUJOURS ICI");
+};
+# CECI EST UN COMMENTAIRE :D;
+if(2 != 2)
+{
+    print("PAS ICI");
+};

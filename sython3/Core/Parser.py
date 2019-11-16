@@ -11,7 +11,8 @@ class Parser:
         self.regex_symbols = (
             ("[^!<>=]", "[=]", "[^=]"), ("", "[)]", ""), ("", '["]', ""), ("", "[']", ""), ("", "[;]", ""),
             ("", "[+]", ""), (r"\d", "[-]", ""), ("[^/]", "[/]", "[^/]"), ("[^*]", "[*]", "[^*]"), ("", "[%]", ""),
-            ("", "[(]", ""), ("", "[,]", ""), ("", "[<]", "[^=]"), ("", "[>]", "[^=]")
+            ("", "[(]", ""), ("", "[,]", ""), ("", "[<]", "[^=]"), ("", "[>]", "[^=]"), ("", "{", ''),
+            ("", "}", "")
         )
         for i in self.regex_symbols:
             if i[0] != "" and i[2] != "":
@@ -78,6 +79,10 @@ class Parser:
                 liste.append(self.read_from_tokens(tokens, True))
                 liste.append(self.get_value(";"))
             elif token == ";" and return_semi_colon:
+                return liste
+            elif token == "{":
+                liste.append(self.read_from_tokens(tokens, False))
+            elif token == "}":
                 return liste
             else:
                 liste.append(self.get_value(token))
