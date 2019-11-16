@@ -82,7 +82,7 @@ class Parser:
 
         liste = split(liste, ";")
         for i in self.symbols:
-            while isinstance(liste, list) and len(liste) == 1:
+            while isinstance(liste, list) and len(liste) == 1 and isinstance(liste[0], list):
                 liste = liste[0]
             temp = split(liste, i, False)
             for k, v in enumerate(temp):
