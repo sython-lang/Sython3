@@ -5,15 +5,18 @@ class Syntax:
     def __init__(self, program):
         self.check = True
         for k, v in enumerate(program.split("\n")):
-            if not self.check_parenthesis(k+1, v):
-                self.check = False
-                break
-            if not self.check_double_quotes(k+1, v):
-                self.check = False
-                break
-            if not self.check_simple_quotes(k+1, v):
-                self.check = False
-                break
+            for i in (self.check_parenthesis, self.check_double_quotes, self.check_simple_quotes,
+                      self.check_semi_colon):
+                if not i(k+1, v):
+                    self.check = False
+                    break
+
+    @staticmethod
+    def check_semi_colon(line, exp):
+        if len(exp.replace(" ", "")) and exp.replace(" ", "")[-1] != ";":
+            print(ERROR_STR.format("SyntaxError", line, "Required ';'"))
+            return False
+        return True
 
     @staticmethod
     def check_double_quotes(line, exp):
