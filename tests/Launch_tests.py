@@ -1,7 +1,4 @@
 import os
 
-print("BEGIN TESTS")
-for i in ("comparaison.sy", "operations.sy", "print.sy"):
-    print("\n"+i)
-    os.system("python ../Sython.py "+i)
-print("\nEND TESTS")
+files = [i for i in os.listdir(".") if i not in ["launch_tests.py"] and i.endswith(".py")]
+os.system("python -m unittest -v "+" ".join(files))
