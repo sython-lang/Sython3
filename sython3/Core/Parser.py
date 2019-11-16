@@ -8,21 +8,23 @@ class Parser:
         self.program = program.replace("\n", "")
         self.symbols = ("=", ")", '"', "'", ";", "+", "-", "/", "*", "%", "(", ",", "<", ">", "**", "//", "<=", ">=",
                         "==", "!=")
-        self.regex_symbols = (("!<>=", "=", "="), ("", ")", ""), ("", '"', ""), ("", "'", ""), ("", ";", ""),
-                              ("", "+", ""), ("", "-", ""), ("/", "/", "/"), ("*", "*", "*"), ("", "%", ""),
-                              ("", "(", ""), ("", ",", ""), ("", "<", "="), ("", ">", "="))
+        self.regex_symbols = (
+            ("[^!<>=]", "[=]", "[^=]"), ("", "[)]", ""), ("", '["]', ""), ("", "[']", ""), ("", "[;]", ""),
+            ("", "[+]", ""), (r"\d", "[-]", ""), ("[^/]", "[/]", "[^/]"), ("[^*]", "[*]", "[^*]"), ("", "[%]", ""),
+            ("", "[(]", ""), ("", "[,]", ""), ("", "[<]", "[^=]"), ("", "[>]", "[^=]")
+        )
         for i in self.regex_symbols:
             if i[0] != "" and i[2] != "":
-                regex = re.compile(r"([^{0}]|^)([{1}])([^{2}]|$)".format(*i))
+                regex = re.compile(r"({0})({1})({2})".format(*i))
                 self.program = regex.sub("\\1 \\2 \\3", self.program)
             elif i[2] != "":
-                regex = re.compile(r"([{0}])([^{1}]|$)".format(*i[1:]))
+                regex = re.compile(r"({0})({1})".format(*i[1:]))
                 self.program = regex.sub(" \\1 \\2", self.program)
             elif i[0] != "":
-                regex = re.compile(r"([^{0}]|^)([{1}])".format(*i[:-1]))
+                regex = re.compile(r"({0})({1})".format(*i[:-1]))
                 self.program = regex.sub("\\1 \\2 ", self.program)
             else:
-                regex = re.compile(r"([{0}])".format(i[1]))
+                regex = re.compile(r"({0})".format(i[1]))
                 self.program = regex.sub(" \\1 ", self.program)
         for i in (i for i in self.symbols if len(i) == 2):
             self.program = self.program.replace(i, " " + i + " ")

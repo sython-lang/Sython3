@@ -49,6 +49,7 @@ class MathematicalTests(BaseTest):
         self.codes_test(
             ("2 + 2;", 4),
             ("8.5 + 1542.2;", 1550.7),
+            ("-2 + 2;", 0),
             ('"oui" + "non";', "ouinon")
         )
 
@@ -56,6 +57,7 @@ class MathematicalTests(BaseTest):
         self.codes_test(
             ("2 - 2;", 0),
             ("2 - 4;", -2),
+            ("-2 - 2;", -4),
             ("round(5.3 - 2, 2);", 3.30),
             ("round(3.3 - 5, 1);", -1.7)
         )
@@ -64,40 +66,47 @@ class MathematicalTests(BaseTest):
         self.codes_test(
             ("2 * 3;", 6),
             ("2 * 0.5;", 1),
+            ("-2 * 2;", -4),
             ('"oui" * 2;', "ouioui")
         )
 
     def test_truediv(self):
         self.codes_test(
             ("2 / 2;", 1),
-            ("2.5 / 2;", 1.25)
+            ("2.5 / 2;", 1.25),
+            ("-2 / 2;", -1)
         )
 
     def test_div(self):
         self.codes_test(
             ("2 // 4;", 0),
-            ("2.03 // 2;", 1)
+            ("2.03 // 2;", 1),
+            ("-2.04 // 2;", -2.0)
         )
 
     def test_pow(self):
         self.codes_test(
             ("2 ** 2;", 4),
-            ("4 ** 16;", 4294967296)
+            ("4 ** 16;", 4294967296),
+            ("-2 ** 2;", 4),
+            ("2 ** -2;", 0.25)
         )
 
     def test_mod(self):
         self.codes_test(
             ("2 % 2;", 0),
             ("3 % 4;", 3),
-            ("5 % 4;", 1)
+            ("5 % 4;", 1),
+            ("-2 % 3;", 1)
         )
 
     def test_set(self):
-        self.codes_execute("var=2;", 'var2="oui";', "var3 = 1.4;")
+        self.codes_execute("var=2;", 'var2="oui";', "var3 = 1.4;", "var4 = -2;")
         self.codes_test(
             ("var;", 2),
             ("var2;", "oui"),
-            ("var3;", 1.4)
+            ("var3;", 1.4),
+            ("var4;", -2)
         )
 
     def test_errors(self):
