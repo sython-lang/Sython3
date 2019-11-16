@@ -1,8 +1,8 @@
-from Core.Environment import Environment
-from Core.Syntax import Syntax
-from Core.Parser import Parser
-from Core.Constants import ERROR_STR
-from Core.Utils import split
+from sython3.Core.Environment import Environment
+from sython3.Core.Syntax import Syntax
+from sython3.Core.Parser import Parser
+from sython3.Core.Constants import ERROR_STR
+from sython3.Core.Utils import split
 
 
 class Interpreter:

@@ -1,4 +1,4 @@
-from Core.Constants import ERROR_STR
+from sython3.Core.Constants import ERROR_STR
 
 
 class Syntax:

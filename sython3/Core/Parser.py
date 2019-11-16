@@ -1,6 +1,6 @@
 import re
 
-from Core.Utils import split
+from sython3.Core.Utils import split
 
 
 class Parser:
