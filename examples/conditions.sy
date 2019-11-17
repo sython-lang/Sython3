@@ -3,7 +3,9 @@ if(8 >= var)
 {
     print("TOUJOURS ICI");
 };
+
 # CECI EST UN COMMENTAIRE :D;
+
 if(2 != 2)
 {
     print("PAS ICI");
@@ -11,4 +13,22 @@ if(2 != 2)
 else
 {
     print("MAIS ICI");
+};
+
+if(2 == 3)
+{
+    print("P");
+    print("AS ICI");
+}
+elif(2 == 4)
+{
+    print("PAS ICI");
+}
+elif(2 == 2)
+{
+    print("ICI");
+}
+else
+{
+    print("PAS ICI");
 };

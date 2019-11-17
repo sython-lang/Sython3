@@ -70,7 +70,7 @@ class Interpreter:
                 if exp[0] in self.env.not_eval_function:
                     args.insert(0, nb)
                     args.insert(0, self)
-                    args += exp[2:]
+                    args += [i for i in exp[2:] if i != "elif"]
                 return proc(*args)
             elif isinstance(exp[1], str) and exp[1] in self.env.operators.keys():
                 proc = self.env.operators[exp[1]]
