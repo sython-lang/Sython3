@@ -16,10 +16,12 @@ class Environment:
         }
         self.not_eval_function = ("if",)
 
-    def condition_if(self, interpreter, nb, condition, exp):
+    def condition_if(self, interpreter, nb, condition, *args):
         if interpreter.eval_exp(nb, condition):
-            interpreter.eval_exp(nb, exp)
-
+            interpreter.eval_exp(nb, args[0])
+        else:
+            if "else" in args:
+                interpreter.eval_exp(nb, args[2])
 
     def set(self, name, value):
         self.variables[name] = value

@@ -7,4 +7,8 @@ if(8 >= var)
 if(2 != 2)
 {
     print("PAS ICI");
+}
+else
+{
+    print("MAIS ICI");
 };
