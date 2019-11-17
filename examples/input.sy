@@ -1,0 +1,3 @@
+var = input();
+var2 = input("Nom : ");
+print(var, var2);

@@ -8,7 +8,8 @@ class Environment:
             '**': op.pow, '=': self.set, "<=": op.le, "<": op.lt, ">": op.gt, ">=": op.ge, "==": op.eq, "!=": op.ne
         }
         self.functions = {
-            'print': print, "int": int, 'float': float, 'str': str, 'round': round, 'if': self.condition_if
+            'print': print, "int": int, 'float': float, 'str': str, 'round': round, 'if': self.condition_if,
+            'input': input
         }
         self.variables = {
             "true": True,
