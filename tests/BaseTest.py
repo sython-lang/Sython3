@@ -20,10 +20,20 @@ class BaseTest(unittest.TestCase):
             parser = Parser(i[0])
             self.assertEqual(self.interpreter.eval_exp(0, parser.parse()), i[1], msg="\nCode : "+i[0])
 
+    def programs_test_print(self, *programs):
+        for i in programs:
+            captured = io.StringIO()
+
+            sys.stdout = captured
+            self.interpreter.execute(i[0])
+            sys.stdout = sys.__stdout__
+            self.assertEqual(captured.getvalue(), i[1], msg="\nCode: " + i[0])
+
     def codes_test_print(self, *tests):
         for i in tests:
             parser = Parser(i[0])
             captured = io.StringIO()
+
             sys.stdout = captured
             self.assertIsNone(self.interpreter.eval_exp(0, parser.parse()), msg="\nCode : "+i[0])
             sys.stdout = sys.__stdout__
