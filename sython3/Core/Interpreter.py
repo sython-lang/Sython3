@@ -7,7 +7,7 @@ from sython3.Core.Utils import split
 
 class Interpreter:
     def __init__(self):
-        self.env = Environment()
+        self.env = Environment(self)
 
     def repl(self, prompt="> "):
         while True:
@@ -69,7 +69,6 @@ class Interpreter:
                             args[k] = v
                 if exp[0] in self.env.not_eval_function:
                     args.insert(0, nb)
-                    args.insert(0, self)
                     args += [i for i in exp[2:] if i != "elif"]
                 return proc(*args)
             elif isinstance(exp[1], str) and exp[1] in self.env.operators.keys():

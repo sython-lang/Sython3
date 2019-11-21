@@ -2,7 +2,9 @@ import operator as op
 
 
 class Environment:
-    def __init__(self):
+    def __init__(self, interpreter):
+        self.interpreter = interpreter
+
         self.operators = {
             '+': op.add, '-': op.sub, "/": op.truediv, "*": op.mul, "//": op.floordiv, "%": op.mod,
             '**': op.pow, '=': self.set, "<=": op.le, "<": op.lt, ">": op.gt, ">=": op.ge, "==": op.eq, "!=": op.ne
@@ -17,15 +19,14 @@ class Environment:
         }
         self.not_eval_function = ("if",)
 
-    @staticmethod
-    def condition_if(interpreter, nb, *args):
+    def condition_if(self, nb, *args):
         for i in range(0, len(args), 2):
             if args[i] == "else":
-                interpreter.eval_exp(nb, args[i+1])
+                self.interpreter.eval_exp(nb, args[i+1])
                 return
             else:
-                if interpreter.eval_exp(nb, args[i]):
-                    interpreter.eval_exp(nb, args[i+1])
+                if self.interpreter.eval_exp(nb, args[i]):
+                    self.interpreter.eval_exp(nb, args[i+1])
                     return
 
     def set(self, name, value):
