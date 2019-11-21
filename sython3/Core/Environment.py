@@ -11,13 +11,20 @@ class Environment:
         }
         self.functions = {
             'print': print, "int": int, 'float': float, 'str': str, 'round': round, 'if': self.condition_if,
-            'input': input, "while": self.loop_while
+            'input': input, "while": self.loop_while, "for": self.loop_for
         }
         self.variables = {
             "true": True,
             "false": False
         }
-        self.not_eval_function = ("if", "while")
+        self.not_eval_function = ("if", "while", "for")
+
+    def loop_for(self, nb, *args):
+        init, cond, statement, exp = args[0]
+        self.interpreter.eval_exp(nb, init)
+        while self.interpreter.eval_exp(nb, cond):
+            self.interpreter.eval_exp(nb, exp)
+            self.interpreter.eval_exp(nb, statement)
 
     def condition_if(self, nb, *args):
         for i in range(0, len(args), 2):

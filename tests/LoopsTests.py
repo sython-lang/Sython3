@@ -9,3 +9,8 @@ class LoopsTests(BaseTest):
         self.programs_test_print(
             ("while(2 != 2) { print('oui'); };", "")
         )
+
+    def test_for(self):
+        self.programs_test_print(
+            ("for(i=0; i<4; i=i+1) { print(i) };", "0\n1\n2\n3\n")
+        )
