@@ -5,7 +5,7 @@ from sython3.Core.Utils import split
 
 class Parser:
     def __init__(self, program):
-        self.program = program.replace("\n", "")
+        self.program = program.replace("\n", "").replace("\t", "")
         self.symbols = ("=", ")", '"', "'", ";", "+", "-", "/", "*", "%", "(", ",", "<", ">", "**", "//", "<=", ">=",
                         "==", "!=")
         self.regex_symbols = (
