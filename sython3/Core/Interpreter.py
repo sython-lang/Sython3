@@ -24,7 +24,9 @@ class Interpreter:
             self.eval(parser.parse())
 
     def eval(self, prog):
-        while isinstance(prog, list) and len(prog) == 1:
+        while isinstance(prog, list) and len(prog) == 1 and isinstance(prog[0], list) and len(prog[0]) == 1:
+            prog = prog[0]
+        if isinstance(prog[0][0], list):
             prog = prog[0]
         for k, v in enumerate(prog):
             self.eval_exp(k, v)
@@ -58,7 +60,7 @@ class Interpreter:
                                 for kt, vt in enumerate(temp):
                                     if len(vt) == 1:
                                         temp[kt] = vt[0]
-                                if exp[0] != "if":
+                                if exp[0] not in self.env.not_eval_function:
                                     args[k] = self.eval_exp(nb, temp)
                                 else:
                                     args[k] = temp

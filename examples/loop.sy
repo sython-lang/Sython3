@@ -1,0 +1,11 @@
+var = input("Entrez 2 : ");
+while(var != "2")
+{
+    var = input("Ce nest pas 2. Entrez 2 : ");
+};
+
+var = 2;
+while(var != 2)
+{
+    print("JAMAIS ICI");
+};
