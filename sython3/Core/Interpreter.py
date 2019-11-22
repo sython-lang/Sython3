@@ -77,6 +77,8 @@ class Interpreter:
                 proc = self.env.operators[exp[1]]
                 if exp[1] == "=":
                     args = (exp[0], self.eval_exp(nb, exp[2]))
+                elif exp[1] == ".":
+                    args = (nb, self.eval_exp(nb, exp[0]), exp[2])
                 else:
                     args = (self.eval_exp(nb, exp[0]), self.eval_exp(nb, exp[2]))
                 try:

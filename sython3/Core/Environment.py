@@ -1,5 +1,7 @@
 import operator as op
 
+from sython3.Core.Constants import ERROR_STR
+
 
 class Environment:
     def __init__(self, interpreter):
@@ -7,7 +9,8 @@ class Environment:
 
         self.operators = {
             '+': op.add, '-': op.sub, "/": op.truediv, "*": op.mul, "//": op.floordiv, "%": op.mod,
-            '**': op.pow, '=': self.set, "<=": op.le, "<": op.lt, ">": op.gt, ">=": op.ge, "==": op.eq, "!=": op.ne
+            '**': op.pow, '=': self.set, "<=": op.le, "<": op.lt, ">": op.gt, ">=": op.ge, "==": op.eq, "!=": op.ne,
+            '.': self.attr
         }
         self.functions = {
             'print': print, "int": int, 'float': float, 'str': str, 'round': round, 'if': self.condition_if,
@@ -18,6 +21,24 @@ class Environment:
             "false": False
         }
         self.not_eval_function = ("if", "while", "for")
+        self.attributes = {
+            str: {
+                "lower": str.lower, "upper": str.upper, "capitalize": str.capitalize, "title": str.title
+            }
+        }
+
+    def attr(self, nb, obj, attribut):
+        if isinstance(attribut, list):
+            try:
+                if len(attribut[1]):
+                    return self.attributes[type(obj)][attribut[0]](obj, *attribut[1:])
+                else:
+                    return self.attributes[type(obj)][attribut[0]](obj)
+            except KeyError:
+                print(ERROR_STR.format("AttributeError", nb,
+                                       "'" + type(obj).__name__ + "' doesn't have '" + attribut[0] + "' as attribute."))
+        else:
+            print(ERROR_STR.format("AttributeError", nb, 'Attribute must be functions.'))
 
     def loop_for(self, nb, *args):
         init, cond, statement, exp = args[0]
