@@ -1,6 +1,7 @@
 import operator as op
 
 from sython3.Core.Constants import ERROR_STR
+from sython3.Core.Utils import split
 
 
 class Environment:
@@ -24,15 +25,23 @@ class Environment:
         self.not_eval_function = ("if", "while", "for")
         self.attributes = {
             str: {
-                "lower": str.lower, "upper": str.upper, "capitalize": str.capitalize, "title": str.title
+                "lower": str.lower, "upper": str.upper, "capitalize": str.capitalize, "title": str.title,
+                "count": str.count, "endswith": str.endswith, "replace": str.replace, "strip": str.strip,
+                "isalnum": str.isalnum, "isalpha": str.isalpha, "isascii": str.isascii, "isdecimal": str.isdecimal,
+                "isdigit": str.isdigit, "isnumeric": str.isnumeric, "islower": str.islower, "isupper": str.isupper,
+                "isprintable": str.isprintable, "istitle": str.istitle
+            },
+            float: {
+                "isint": float.is_integer
             }
         }
 
     def attr(self, nb, obj, attribut):
         if isinstance(attribut, list):
+            attribut[1] = [self.interpreter.eval_exp(nb, i) for i in split(attribut[1], ",")]
             try:
                 if len(attribut[1]):
-                    return self.attributes[type(obj)][attribut[0]](obj, *attribut[1:])
+                    return self.attributes[type(obj)][attribut[0]](obj, *attribut[1])
                 else:
                     return self.attributes[type(obj)][attribut[0]](obj)
             except KeyError:
