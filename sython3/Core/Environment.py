@@ -14,7 +14,8 @@ class Environment:
         }
         self.functions = {
             'print': print, "int": int, 'float': float, 'str': str, 'round': round, 'if': self.condition_if,
-            'input': input, "while": self.loop_while, "for": self.loop_for
+            'input': input, "while": self.loop_while, "for": self.loop_for, "max": max, "min": min,
+            'len': len, 'bool': bool
         }
         self.variables = {
             "true": True,
