@@ -1,26 +1,43 @@
 from sython3.Core.Constants import ERROR_STR
+from sython3.Core.Parser import Parser
+from sython3.Core.Environment import Environment
 
 
 class Syntax:
     def __init__(self, program):
         self.check = True
-        for k, v in enumerate(program.split("\n")):
-            for i in (self.check_parenthesis, self.check_double_quotes, self.check_simple_quotes,
-                      self.check_semi_colon):
-                if not i(k+1, v):
-                    self.check = False
-                    break
+        self.program = program
+        self.program_parsed = Parser(program).parse()
 
-    @staticmethod
-    def check_semi_colon(line, exp):
-        # TODO : REMAKE THIS FUNCTION
+        from sython3.Core.Interpreter import Interpreter
 
-        #  if len(exp.replace(" ", "")) and exp.replace(" ", "")[-1] != ";":
-        #      print(ERROR_STR.format("SyntaxError", line, "Required ';'"))
-        #      return False
+        self.env = Environment(Interpreter())
+        while isinstance(self.program_parsed, list) and len(self.program_parsed) == 1 \
+                and isinstance(self.program_parsed[0], list) and len(self.program_parsed[0]) == 1:
+            self.program_parsed = self.program_parsed[0]
+        if isinstance(self.program_parsed[0][0], list):
+            self.program_parsed = self.program_parsed[0]
+        for i in (  # self.check_parenthesis, self.check_double_quotes, self.check_simple_quotes,
+                  self.check_semi_colon,):
+            self.check = i()
+            break
+
+    def check_semi_colon(self):
+        for k, v in enumerate(self.program_parsed):
+            nb = 0
+            for function in self.env.functions.keys():
+                nb += v.count(function)
+            if nb > 1:
+                print(ERROR_STR.format("SyntaxError", k+1, "';' expected"))
+                return False
+        for i in range(len(self.program.split("\n"))-1, -1, -1):
+            if self.program.split("\n")[i] != "":
+                if self.program.split("\n")[i][-1].strip() != ";":
+                    print(ERROR_STR.format("SyntaxError", i+1, "';' expected"))
+                    return False
+                break
         return True
 
-    @staticmethod
     def check_double_quotes(line, exp):
         nb = 0
         for i in exp:
@@ -31,7 +48,6 @@ class Syntax:
             return False
         return True
 
-    @staticmethod
     def check_simple_quotes(line, exp):
         nb = 0
         for i in exp:
@@ -42,7 +58,6 @@ class Syntax:
             return False
         return True
 
-    @staticmethod
     def check_parenthesis(line, exp):
         nb = 0
         for i in exp:
