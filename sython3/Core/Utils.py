@@ -1,5 +1,7 @@
 import itertools
 
+from collections import deque, MutableSet
+
 
 def split(liste, mot, exclu=True):
     if exclu:
@@ -20,3 +22,38 @@ def split(liste, mot, exclu=True):
                 itertools.groupby(liste, lambda word: isinstance(word, str) and word == mot)
             )
         ))
+
+
+class Flattener(object):
+    DEFAULT_FLATTEN_TYPES = (
+        list,
+        tuple,
+        set,
+        (x for x in ()).__class__,
+        range,
+        deque,
+        MutableSet,
+    )
+
+    def __init__(self, flatten_types=None, iterable_getters={}):
+        self.flatten_types = flatten_types or self.DEFAULT_FLATTEN_TYPES
+        self.iterable_getters = iterable_getters
+
+    def should_flatten(self, obj):
+        return isinstance(obj, self.flatten_types)
+
+    def transform_iterable(self, obj):
+        if obj.__class__ in self.iterable_getters:
+            return self.iterable_getters[obj.__class__](obj)
+        return obj
+
+    def __call__(self, iterable):
+        for e in iterable:
+            if self.should_flatten(e):
+                for f in self(self.transform_iterable(e)):
+                    yield f
+            else:
+                yield e
+
+
+flattener = Flattener()

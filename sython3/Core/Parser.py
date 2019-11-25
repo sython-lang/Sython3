@@ -37,25 +37,31 @@ class Parser:
             token = tokens.pop(0)
             if token == '"':
                 text = '"'
-                while tokens[0] != '"':
-                    if text == '"':
-                        text += tokens[0]
-                    else:
-                        text += " " + tokens[0]
+                try:
+                    while tokens[0] != '"':
+                        if text == '"':
+                            text += tokens[0]
+                        else:
+                            text += " " + tokens[0]
+                        tokens.pop(0)
+                    text += '"'
                     tokens.pop(0)
-                text += '"'
-                tokens.pop(0)
+                except IndexError:
+                    pass
                 tlist.append(text)
             elif token == "'":
                 text = "'"
-                while tokens[0] != "'":
-                    if text == "'":
-                        text += tokens[0]
-                    else:
-                        text += " " + tokens[0]
+                try:
+                    while tokens[0] != "'":
+                        if text == "'":
+                            text += tokens[0]
+                        else:
+                            text += " " + tokens[0]
+                        tokens.pop(0)
+                    text += "'"
                     tokens.pop(0)
-                text += "'"
-                tokens.pop(0)
+                except IndexError:
+                    pass
                 tlist.append(text)
             elif token != "":
                 tlist.append(token)

@@ -1,6 +1,7 @@
 from sython3.Core.Constants import ERROR_STR
 from sython3.Core.Parser import Parser
 from sython3.Core.Environment import Environment
+from sython3.Core.Utils import flattener
 
 
 class Syntax:
@@ -17,7 +18,7 @@ class Syntax:
             self.program_parsed = self.program_parsed[0]
         if isinstance(self.program_parsed[0][0], list):
             self.program_parsed = self.program_parsed[0]
-        for i in (  # self.check_parenthesis, self.check_double_quotes, self.check_simple_quotes,
+        for i in (self.check_parenthesis, self.check_double_quotes, self.check_simple_quotes,
                   self.check_semi_colon,):
             self.check = i()
             break
@@ -38,38 +39,42 @@ class Syntax:
                 break
         return True
 
-    def check_double_quotes(line, exp):
-        nb = 0
-        for i in exp:
-            if i == '"':
-                nb += 1
-        if nb % 2:
-            print(ERROR_STR.format("SyntaxError", line, 'Double quote not finished'))
-            return False
-        return True
-
-    def check_simple_quotes(line, exp):
-        nb = 0
-        for i in exp:
-            if i == "'":
-                nb += 1
-        if nb % 2:
-            print(ERROR_STR.format("SyntaxError", line, 'Simple quote not finished'))
-            return False
-        return True
-
-    def check_parenthesis(line, exp):
-        nb = 0
-        for i in exp:
-            if i == "(":
-                nb += 1
-            if i == ")":
-                if nb == 0:
-                    print(ERROR_STR.format("SyntaxError", line, "')' unexpected"))
+    def check_double_quotes(self):
+        for i in flattener(self.program_parsed):
+            if i[0] == '"':
+                if i[-1] != i[0]:
+                    print(ERROR_STR.format("SyntaxError", i, '" expected.'))
                     return False
+        return True
+
+    def check_simple_quotes(self):
+        for i in flattener(self.program_parsed):
+            if i[0] == "'":
+                if i[-1] != i[0]:
+                    print(ERROR_STR.format("SyntaxError", i, "' expected."))
+                    return False
+        return True
+
+    def check_parenthesis(self):
+        passed = 0
+        for line, exp in enumerate(self.program.split(";")):
+            nb = 0
+            if not passed:
+                if exp.strip().startswith("for"):
+                    passed = 2
                 else:
-                    nb -= 1
-        if nb != 0:
-            print(ERROR_STR.format("SyntaxError", line, "')' expected"))
-            return False
+                    for k, i in enumerate(exp):
+                        if i == "(":
+                            nb += 1
+                        elif i == ")":
+                            if nb == 0:
+                                print(ERROR_STR.format("SyntaxError", line, "')' unexpected"))
+                                return False
+                            else:
+                                nb -= 1
+                    if nb != 0:
+                        print(ERROR_STR.format("SyntaxError", line, "')' expected"))
+                        return False
+            else:
+                passed -= 1
         return True
