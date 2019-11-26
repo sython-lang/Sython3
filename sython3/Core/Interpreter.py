@@ -45,8 +45,8 @@ class Interpreter:
         elif len(exp) == 1:
             return self.eval_exp(nb, exp[0])
         else:
-            if isinstance(exp[0], str) and exp[0] in self.env.functions.keys():
-                proc = self.env.functions[exp[0]]
+            if isinstance(exp[0], str) and exp[0] in self.env.builtins.keys():
+                proc = self.env.builtins[exp[0]]
                 temp = split(exp[1], ",")
                 for k, v in enumerate(temp):
                     if len(v) == 1:

@@ -1,0 +1,5 @@
+enum Shape { Rect, Circle, Polygon };
+
+print("Rect :", Shape.Rect);
+print("Circle :", Shape.Circle);
+print("Polygon :", Shape.Polygon);

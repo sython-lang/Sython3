@@ -26,7 +26,7 @@ class Syntax:
     def check_semi_colon(self):
         for k, v in enumerate(self.program_parsed):
             nb = 0
-            for function in self.env.functions.keys():
+            for function in self.env.builtins.keys():
                 nb += v.count(function)
             if nb > 1:
                 print(ERROR_STR.format("SyntaxError", k+1, "';' expected"))

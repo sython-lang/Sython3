@@ -2,6 +2,7 @@ import operator as op
 
 from sython3.Core.Constants import ERROR_STR
 from sython3.Core.Utils import split
+from sython3.Core.Objects.Enum import Enum
 
 
 class Environment:
@@ -13,16 +14,17 @@ class Environment:
             '**': op.pow, '=': self.set, "<=": op.le, "<": op.lt, ">": op.gt, ">=": op.ge, "==": op.eq, "!=": op.ne,
             '.': self.attr
         }
-        self.functions = {
+        self.builtins = {
             'print': print, "int": int, 'float': float, 'str': str, 'round': round, 'if': self.condition_if,
             'input': input, "while": self.loop_while, "for": self.loop_for, "max": max, "min": min,
-            'len': len, 'bool': bool
+            'len': len, 'bool': bool, 'enum': self.enum
         }
+        self.functions = {}
         self.variables = {
             "true": True,
             "false": False
         }
-        self.not_eval_function = ("if", "while", "for")
+        self.not_eval_function = ("if", "while", "for", "enum")
         self.attributes = {
             str: {
                 "lower": str.lower, "upper": str.upper, "capitalize": str.capitalize, "title": str.title,
@@ -36,6 +38,12 @@ class Environment:
             }
         }
 
+    def enum(self, nb, *args):
+        name, args = args
+        name = "".join(name)
+        args = [i for i in args if i != ","]
+        self.set(name, Enum(name, *args))
+
     def attr(self, nb, obj, attribut):
         if isinstance(attribut, list):
             attribut[1] = [self.interpreter.eval_exp(nb, i) for i in split(attribut[1], ",")]
@@ -48,7 +56,11 @@ class Environment:
                 print(ERROR_STR.format("AttributeError", nb,
                                        "'" + type(obj).__name__ + "' doesn't have '" + attribut[0] + "' as attribute."))
         else:
-            print(ERROR_STR.format("AttributeError", nb, 'Attribute must be functions.'))
+            if isinstance(obj, Enum):
+                return obj.get_value(nb, attribut)
+            else:
+                print(ERROR_STR.format("AttributeError", nb,
+                                       "'" + type(obj).__name__ + "' doesn't have '" + attribut[0] + "' as attribute."))
 
     def loop_for(self, nb, *args):
         init, cond, statement, exp = args[0]
